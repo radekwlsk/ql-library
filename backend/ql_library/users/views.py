@@ -1,7 +1,7 @@
 from rest_framework import status, viewsets
 
-from .serializers import UserSerializer
 from .models import User
+from .serializers import UserSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):

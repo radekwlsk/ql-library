@@ -1,1 +1,1 @@
-default_app_config = 'ql_library.users.apps.UsersConfig'
+default_app_config = "ql_library.users.apps.UsersConfig"

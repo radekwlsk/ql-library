@@ -1,6 +1,7 @@
+from django.contrib.auth import get_user_model
+
 import graphene
 
-from django.contrib.auth import get_user_model
 from graphene_django.types import DjangoObjectType
 
 User = get_user_model()
@@ -20,8 +21,8 @@ class UsersQuery(object):
     get_users = graphene.List(UserType)
 
     def resolve_get_user(self, info, **kwargs):
-        id = kwargs.get('id')
-        username = kwargs.get('username')
+        id = kwargs.get("id")
+        username = kwargs.get("username")
 
         if id is not None:
             return User.objects.get(pk=id)

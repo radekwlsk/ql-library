@@ -1,2 +1,2 @@
-from .query import BooksQuery
 from .mutation import BooksMutation
+from .query import BooksQuery

@@ -17,8 +17,8 @@ class TestUserQuery:
     def test_get_users_query(self, gql_client):
         users = UserFactory.create_batch(5)
         result = gql_client().execute(self.query)
-        assert 'errors' not in result
-        assert len(result['data']['getUsers']) == len(users)
+        assert "errors" not in result
+        assert len(result["data"]["getUsers"]) == len(users)
 
     def test_get_user_query(self, gql_client):
         users = UserFactory.create_batch(5)
@@ -32,5 +32,5 @@ class TestUserQuery:
         """
 
         result = gql_client().execute(query)
-        assert 'errors' not in result
-        assert result['data']['getUser']['email'] == users[0].email
+        assert "errors" not in result
+        assert result["data"]["getUser"]["email"] == users[0].email

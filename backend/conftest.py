@@ -1,22 +1,24 @@
-import pytest
 from django.urls import reverse
+
+import pytest
+
+from faker import config
 from graphene.test import Client
 from pytest_django.lazy_django import skip_if_no_django
 from requests_mock import MockerCore
-from faker import config
 from rest_framework.test import APIRequestFactory
+
 from ql_library.schema import schema
 
+config.DEFAULT_LOCALE = "pl_PL"
 
-config.DEFAULT_LOCALE = 'pl_PL'
 
-
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def faker_locale():
-    return 'pl_PL'
+    return "pl_PL"
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def setup_view():
     """Returns function able to setup Django's view.
 
@@ -36,6 +38,7 @@ def setup_view():
             # Example test ugly dispatch():
             response = view.dispatch(view.request, *view.args, **view.kwargs)
     """
+
     def _inner_setup_view(view, request, *args, **kwargs):
         view.request = request
         view.args = args
@@ -45,7 +48,7 @@ def setup_view():
     return _inner_setup_view
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def api_setup_view():
     """Returns function able to setup DRF's view.
 
@@ -59,6 +62,7 @@ def api_setup_view():
             view = api_setup_view(view, request, 'list')
             assert view.get_serializer_class() == view.serializer_class
     """
+
     def _inner_api_setup_view(view, request, action, *args, **kwargs):
         view.request = request
         view.action = action
@@ -84,12 +88,12 @@ def requests_mock():
     mock.stop()
 
 
-
 @pytest.fixture
 def gql_client(rf):
     def inner(**kwargs):
-        request = rf.get(reverse('graphql'))
-        kwargs['context_value'] = request
+        request = rf.get(reverse("graphql"))
+        kwargs["context_value"] = request
         gql_client = Client(schema, **kwargs)
         return gql_client
+
     return inner

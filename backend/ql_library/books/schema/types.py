@@ -1,9 +1,9 @@
 import graphene
-from graphene import ObjectType
 
+from graphene import ObjectType
 from graphene_django.types import DjangoObjectType
 
-from ..models import Book, Author
+from ..models import Author, Book
 
 
 class CountryType(ObjectType):

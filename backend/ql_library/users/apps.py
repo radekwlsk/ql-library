@@ -2,7 +2,7 @@ from django.apps import AppConfig
 
 
 class UsersConfig(AppConfig):
-    name = 'ql_library.users'
+    name = "ql_library.users"
     verbose_name = "Users"
 
     def ready(self):

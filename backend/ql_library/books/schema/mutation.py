@@ -1,8 +1,7 @@
 import graphene
 
+from ..models import Author, Book
 from .types import BookType
-
-from ..models import Book, Author
 
 
 class CreateBook(graphene.Mutation):
@@ -40,9 +39,9 @@ class UpdateBook(graphene.Mutation):
 
     def mutate(self, info, id, **kwargs):
         book = Book.objects.get(pk=id)
-        if 'author_id' in kwargs:
-            book.author = Author.objects.get(pk=kwargs['author_id'])
-        for field in ['title', 'language', 'pages', 'category']:
+        if "author_id" in kwargs:
+            book.author = Author.objects.get(pk=kwargs["author_id"])
+        for field in ["title", "language", "pages", "category"]:
             if field in kwargs:
                 setattr(book, field, kwargs[field])
         book.save()

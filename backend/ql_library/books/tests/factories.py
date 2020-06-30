@@ -1,7 +1,8 @@
-import factory
 import random
 
-from ..models import Book, Author
+import factory
+
+from ..models import Author, Book
 
 
 class AuthorFactory(factory.DjangoModelFactory):
