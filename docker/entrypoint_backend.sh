@@ -58,6 +58,19 @@ case "$cmd" in
             --pylama \
             --verbose
     ;;
+    lint)
+        pylama
+    ;;
+    sort)
+        isort -rc --atomic .
+    ;;
+    format)
+        black .
+    ;;
+    gqlschema)
+        python manage.py graphql_schema --out schema.json
+        python manage.py graphql_schema --out schema.graphql
+    ;;
     runcitest)
         pipenv install --dev
         pipenv run $PYTEST \
