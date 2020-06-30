@@ -284,9 +284,7 @@ LOGIN_URL = 'account_login'
 
 
 # SLUGIFIER
-AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
-
-
+AUTOSLUG_SLUGIFY_FUNCTION = 'django.utils.text.slugify'
 
 
 # DJANGO REST FRAMEWORK
