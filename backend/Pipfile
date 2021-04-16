@@ -141,7 +141,7 @@ django-webtest = "~=1.9.7"
 django-test-plus = "~=1.3.1"
 
 # # Wery useful toolbar for debuging project
-django-debug-toolbar = "~=2.0"
+django-debug-toolbar = "~=2.2"
 
 
 
