@@ -14,7 +14,7 @@ python_version = '3.7'
 enum34 = {version = "*", python_version = "<'3.4'"}
 
 # Django
-django = "~=3.0.7"
+django = "~=3.1.13"
 
 # HTTP for Humans
 requests = "*"
