@@ -2,7 +2,10 @@ import random
 
 from django.core.management.base import BaseCommand
 
-from ql_library.books.tests.factories import AuthorFactory, BookFactory
+from ql_library.books.tests.factories import (
+    AuthorFactory,
+    BookFactory,
+)
 
 
 class Command(BaseCommand):

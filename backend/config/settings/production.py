@@ -2,19 +2,8 @@
 Production settings for ql-library project.
 
 - Use Redis for cache
-- Use sentry for error logging
 """
-import logging
-
-# SENTRY SDK CLIENT
-# ------------------------------------------------------------------------------
-# Senty DNS is taken from SENTRY_DSN environment variable
-# https://sentry.io/for/django/
-# https://sentry.io/for/celery/
-# https://docs.sentry.io/platforms/python/logging/
-import sentry_sdk
-
-from sentry_sdk.integrations.django import DjangoIntegration
+import os
 
 from .base import *  # noqa
 
@@ -32,9 +21,7 @@ INSTALLED_APPS += [
     "health_check.db",
     "health_check.cache",
     "health_check.contrib.psutil",
-    #'health_check.storage',                    # save and delete file in storage
-    #'health_check.contrib.s3boto_storage',     # requires boto and S3BotoStorage backend
-    #'health_check.contrib.rabbitmq',           # requires RabbitMQ broker
+    "health_check.storage",
 ]
 
 
@@ -42,14 +29,13 @@ INSTALLED_APPS += [
 # ------------------------------------------------------------------------------
 
 DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
-DATABASES["default"]["ENGINE"] = "django_prometheus.db.backends.postgresql"
 
 
 # APPLICATION VERSION
 # ------------------------------------------------------------------------------
 APP_VERSION = "unknown"
-if os.path.exists(str(APPS_DIR.path(".appversion"))):
-    APP_VERSION = APPS_DIR.file(".appversion").read().strip()
+if os.path.exists(str(APPS_DIR / ".appversion")):
+    APP_VERSION = (APPS_DIR / ".appversion").read().strip()
 
 
 # GIT COMMIT
@@ -60,28 +46,7 @@ if os.path.exists(str(APPS_DIR(".gitcommit"))):
 
 
 API_MIDDLEWARE = ["ql_library.contrib.middleware.VersionMiddleware"]
-PROMETHEUS_MIDDLEWARE = [
-    "django_prometheus.middleware.PrometheusBeforeMiddleware",
-    "django_prometheus.middleware.PrometheusAfterMiddleware",
-]
-MIDDLEWARE = (
-    [PROMETHEUS_MIDDLEWARE[0]]
-    + API_MIDDLEWARE
-    + MIDDLEWARE
-    + [PROMETHEUS_MIDDLEWARE[1]]
-)
-
-
-SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="production")
-
-# https://docs.sentry.io/workflow/releases/?platform=python
-SENTRY_RELEASE = f"ql_library@{APP_VERSION}"
-
-sentry_sdk.init(
-    release=SENTRY_RELEASE,
-    environment=SENTRY_ENVIRONMENT,
-    integrations=[DjangoIntegration()],
-)
+MIDDLEWARE = API_MIDDLEWARE + MIDDLEWARE
 
 
 # SECURITY
@@ -125,7 +90,7 @@ X_FRAME_OPTIONS = "DENY"
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["ql-library.dev.10clouds.io"])
 # END SITE CONFIGURATION
 
-INSTALLED_APPS += ["gunicorn", "django_prometheus"]
+INSTALLED_APPS += ["gunicorn"]
 
 
 # EMAIL
@@ -157,13 +122,12 @@ TEMPLATES[0]["OPTIONS"]["loaders"] = [
 
 # CACHING
 # ------------------------------------------------------------------------------
-REDIS_LOCATION = "{0}/{1}".format(env("REDIS_URL", default="redis://127.0.0.1:6379"), 0)
+REDIS_URL = env.str("REDIS_URL", default="redis://127.0.0.1:6379")
 
-# Heroku URL does not pass the DB number, so we parse it in
 CACHES = {
     "default": {
-        "BACKEND": "django_prometheus.cache.backends.redis.RedisCache",
-        "LOCATION": REDIS_LOCATION,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": REDIS_URL,
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "IGNORE_EXCEPTIONS": False,
@@ -220,14 +184,6 @@ LOGGING = {
 # ------------------------------------------------------------------------------
 # Location of root django.contrib.admin URL, use {% url 'admin:index' %}
 ADMIN_URL = env("DJANGO_ADMIN_URL", default="admin")
-
-
-# DJANGO PROMETHEUS
-# ------------------------------------------------------------------------------
-PROMETHEUS_EXPORT_MIGRATIONS = (
-    False
-)  # if set to True Prometheus will monitor total number of applied and
-# unapplied migrations by connection
 
 
 # CORS

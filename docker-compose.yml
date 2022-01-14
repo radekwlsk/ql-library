@@ -3,7 +3,7 @@ version: '3.4'
 services:
   db:
     user: "${UID:-1000}"
-    image: postgres:11.6
+    image: postgres:13.5
     volumes:
       - ./shared/postgresql:/var/lib/postgresql/data
     ports:
@@ -14,15 +14,25 @@ services:
       # We set PGDATA to a subfolder because Postgres needs this folder to be
       # empty, and we have a .gitkeep file there
       - PGDATA=/var/lib/postgresql/data/pgdata
-  app:
+    command:
+      - "postgres"
+      - "-c"
+      - "fsync=off"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U backend" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  app:  &app
     user: "${UID:-1000}"
     container_name: ql-library-app
     build:
       network: host
       context: .
-      dockerfile: ./docker/local/backend/Dockerfile
+      dockerfile: ./docker/Dockerfile
       args:
         USER_ID: "${UID:-1000}"
+        DEV_MODE: 1
     ports:
       - "8000:8000"
     depends_on:
@@ -30,13 +40,12 @@ services:
     env_file:
       - .envs/.local/.django
       - .envs/.local/.postgres
+    command: /start-runserver.sh
     volumes:
       - ./backend:/app
       - ./shared/media:/app/shared/media
       - ./shared/static:/app/shared/static
       - ./shared/templates:/app/shared/templates
 
-
   redis:
-    image: redis:3.0
-
+    image: redis:6.0

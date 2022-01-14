@@ -2,7 +2,10 @@ import django.contrib.auth.models
 import django.contrib.auth.validators
 import django.utils.timezone
 
-from django.db import migrations, models
+from django.db import (
+    migrations,
+    models,
+)
 
 
 class Migration(migrations.Migration):
@@ -57,7 +60,7 @@ class Migration(migrations.Migration):
                 (
                     "first_name",
                     models.CharField(
-                        blank=True, max_length=30, verbose_name="first name"
+                        blank=True, max_length=150, verbose_name="first name"
                     ),
                 ),
                 (

@@ -84,15 +84,3 @@ REST_FRAMEWORK["DEFAULT_AUTHENTICATION_CLASSES"] += (
 # CORS
 
 CORS_ORIGIN_ALLOW_ALL = True
-
-# Your local stuff: Below this line define 3rd party library settings
-# ------------------------------------------------------------------------------
-
-NOTEBOOK_ARGUMENTS = [
-    "--ip",
-    "0.0.0.0",
-    "--port",
-    "8888",
-    "--allow-root",
-    "--no-browser",
-]

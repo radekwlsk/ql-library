@@ -2,18 +2,16 @@
 # https://gunicorn-docs.readthedocs.io/en/stable/settings.html
 
 set -o errexit
-set -o pipefail
 set -o nounset
 
-python /app/manage.py migrate --noinput
-python /app/manage.py collectstatic --clear --noinput
-
-/usr/local/bin/gunicorn config.wsgi:application \
+gunicorn config.wsgi:application \
         --bind ${GUNICORN_HOST:-0.0.0.0}:${GUNICORN_PORT:-8000} \
         --timeout ${GUNICORN_TIMEOUT:-300} \
-        --workers ${GUNICORN_WORKERS:-4} \
-        --threads ${GUNICORN_THREADS:-12} \
+        --max-requests ${GUNICORN_MAX_REQUESTS:-5000} \
+        --workers ${GUNICORN_WORKERS:-2} \
+        --threads ${GUNICORN_THREADS:-4} \
         --worker-class ${GUNICORN_WORKER_CLASS:-sync} \
+        --worker-tmp-dir /dev/shm \
         --name ql_library \
         --access-logfile ${GUNICORN_ACCESS_LOGFILE:--} \
         --error-logfile ${GUNICORN_ERROR_LOGFILE:--} \

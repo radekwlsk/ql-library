@@ -1,16 +1,9 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
-
-from django_prometheus.models import ExportModelOperationsMixin
+from django.utils.translation import gettext_lazy as _
 
 
-class User(
-    ExportModelOperationsMixin("user"), AbstractUser
-):  # By adding this mixin you can monitor with Prometheus
-    # the creation/deletion/update rate for your model
-
+class User(AbstractUser):
     # First Name and Last Name do not cover name patterns
     # around the globe.
     name = models.CharField(_("Name of User"), blank=True, max_length=255)

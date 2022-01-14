@@ -16,7 +16,7 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/backend" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Remote Python 3.7.4 Docker Compose (app at [/Users/radoslaw.kowalski/projects/ql-library/ql_library/docker-compose.yml])" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="QL-Library - Docker Python 3.9.9" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">

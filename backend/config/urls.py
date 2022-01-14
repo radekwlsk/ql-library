@@ -1,31 +1,15 @@
 import os
 
 from django.conf import settings
-from django.conf.urls import include, url
+from django.conf.urls import (
+    include,
+    url,
+)
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.views import defaults as default_views
 
-from drf_yasg import openapi
-from drf_yasg.views import get_schema_view
 from graphene_django.views import GraphQLView
-from rest_framework import authentication, permissions
-
-schema_view = get_schema_view(
-    openapi.Info(
-        title="ql-library API",
-        default_version="v1",
-        description="API documentation for ql-library",
-    ),
-    validators=["flex", "ssv"],
-    public=False,
-    permission_classes=(permissions.IsAdminUser,),
-    authentication_classes=(
-        authentication.TokenAuthentication,
-        authentication.SessionAuthentication,
-    ),
-)
-
 
 urlpatterns = [
     # Django Admin, use {% url 'admin:index' %}
@@ -35,11 +19,6 @@ urlpatterns = [
     url(r"^users/", include("ql_library.users.urls")),
     url(r"^rest-auth/", include("rest_auth.urls")),
     url(r"^api-auth/", include("rest_framework.urls")),
-    url(
-        r"^docs/$",
-        schema_view.with_ui("redoc", cache_timeout=None),
-        name="schema-redoc",
-    ),
     url(r"^graphql/", GraphQLView.as_view(graphiql=True), name="graphql"),
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
@@ -70,6 +49,3 @@ if settings.DEBUG:
         import debug_toolbar
 
         urlpatterns = [url(r"^__debug__/", include(debug_toolbar.urls))] + urlpatterns
-
-if os.environ.get("DJANGO_SETTINGS_MODULE") == "config.settings.production":
-    urlpatterns += [url(r"^prometheus/", include("django_prometheus.urls"))]

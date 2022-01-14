@@ -7,28 +7,16 @@ https://docs.djangoproject.com/en/dev/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
-import os
+import pathlib
 
-import environ
+import dj_database_url
+import environs
 
 # (ql_library/backend/config/settings/base.py - 3 = ql_library/backend) or inside docker container is path /app
-APPS_DIR = environ.Path(__file__) - 3
+APPS_DIR = pathlib.Path(__file__).parents[2]
 
 # Load operating system environment variables and then prepare to use them
-env = environ.Env()
-
-# .env file, should load only in development environment
-READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
-
-if READ_DOT_ENV_FILE:
-    # Operating System Environment variables have precedence over variables defined in the .env file,
-    # that is to say variables from the .env files will only be used if not defined
-    # as environment variables.
-    env_file = str(APPS_DIR.path(".env"))
-    print("Loading : {}".format(env_file))
-    env.read_env(env_file)
-    print("The .env file has been loaded. See base.py for more information")
-
+env = environs.Env()
 
 # APP
 # ------------------------------------------------------------------------------
@@ -48,7 +36,6 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "rest_auth",
-    "drf_yasg",
     "corsheaders",
     "graphene_django",
 ]
@@ -92,7 +79,7 @@ DEBUG = env.bool("DJANGO_DEBUG", False)
 # FIXTURES
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-FIXTURE_DIRS
-FIXTURE_DIRS = (str(APPS_DIR.path("shared/fixtures")),)
+FIXTURE_DIRS = (str(APPS_DIR / "shared" / "fixtures"),)
 
 
 # EMAIL
@@ -127,11 +114,10 @@ DB_PORT = env("POSTGRES_PORT", default="")
 DB_NAME = env("POSTGRES_DB", default="")
 DB_HOST = env("POSTGRES_HOST", default="")
 
-DB_CONFIG_URL = "postgres://{}:{}@{}:{}/{}".format(
-    DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
-)
+DB_CONFIG_URL = f"postgres://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
-DATABASES = {"default": env.db("DATABASE_URL", default=DB_CONFIG_URL)}
+
+DATABASES = {"default": dj_database_url.parse(DB_CONFIG_URL)}
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 
@@ -167,7 +153,7 @@ TEMPLATES = [
         # See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TEMPLATES-BACKEND
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
-        "DIRS": [str(APPS_DIR.path("shared/templates"))],
+        "DIRS": [str(APPS_DIR / "shared" / "templates")],
         "OPTIONS": {
             # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-debug
             "debug": DEBUG,
@@ -203,7 +189,7 @@ STATIC_ROOT = None
 STATIC_URL = "/static/"
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
-STATICFILES_DIRS = [str(APPS_DIR("shared/static"))]
+STATICFILES_DIRS = [str(APPS_DIR / "shared" / "static")]
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = [
@@ -215,7 +201,7 @@ STATICFILES_FINDERS = [
 # MEDIA
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-root
-MEDIA_ROOT = str(APPS_DIR("shared/media"))
+MEDIA_ROOT = str(APPS_DIR / "shared" / "media")
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = "/media/"

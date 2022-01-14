@@ -1,10 +1,16 @@
 from unittest.mock import patch
 
 from rest_framework import status
-from rest_framework.test import APIRequestFactory, force_authenticate
+from rest_framework.test import (
+    APIRequestFactory,
+    force_authenticate,
+)
 from test_plus.test import TestCase
 
-from .. import serializers, views
+from .. import (
+    serializers,
+    views,
+)
 from .factories import UserFactory
 
 

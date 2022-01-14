@@ -2,10 +2,17 @@ import random
 
 import factory
 
-from ..models import Author, Book
+from factory.django import DjangoModelFactory
+from factory.fuzzy import FuzzyChoice
+
+from .. import choices
+from ..models import (
+    Author,
+    Book,
+)
 
 
-class AuthorFactory(factory.DjangoModelFactory):
+class AuthorFactory(DjangoModelFactory):
     name = factory.Faker("name")
     birthday = factory.Faker("date_of_birth", minimum_age=18, maximum_age=89)
     country = factory.Faker("country")
@@ -14,12 +21,12 @@ class AuthorFactory(factory.DjangoModelFactory):
         model = Author
 
 
-class BookFactory(factory.DjangoModelFactory):
+class BookFactory(DjangoModelFactory):
     author = factory.SubFactory(AuthorFactory)
     title = factory.Faker("sentence", nb_words=5, variable_nb_words=True)
-    language = factory.Iterator(map(lambda ch: ch[0], Book.LANGUAGE_CHOICES))
+    language = FuzzyChoice(choices.BookLanguage.values)
     pages = factory.LazyFunction(lambda: random.randint(60, 1000))
-    category = factory.Iterator(map(lambda ch: ch[0], Book.CATEGORY_CHOICES))
+    category = FuzzyChoice(choices.BookCategory.values)
 
     class Meta:
         model = Book

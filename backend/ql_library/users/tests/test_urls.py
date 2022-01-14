@@ -1,4 +1,7 @@
-from django.urls import resolve, reverse
+from django.urls import (
+    resolve,
+    reverse,
+)
 
 from test_plus.test import TestCase
 
