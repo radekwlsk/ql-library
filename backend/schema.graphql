@@ -1,0 +1,80 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type AuthorType {
+  id: ID!
+  name: String!
+  birthday: Date
+  country: CountryType
+  books(category: BookCategory, language: BookLanguage): [BookType]
+}
+
+enum BookCategory {
+  FANTASY
+  NOVEL
+  COOKBOOK
+  BIOGRAPHY
+}
+
+enum BookLanguage {
+  EN
+  PL
+  FR
+  DE
+}
+
+type BookType {
+  id: ID!
+  author: AuthorType!
+  title: String!
+  language: BookLanguage!
+  pages: Int
+  category: BookCategory
+}
+
+type CountryType {
+  name: String
+}
+
+type CreateBook {
+  book: BookType
+}
+
+scalar Date
+
+scalar DateTime
+
+type Mutation {
+  createBook(authorId: ID!, category: BookCategory, language: BookLanguage = EN, pages: Int, title: String!): CreateBook
+  updateBook(authorId: ID, category: BookCategory, language: BookLanguage, id: ID, pages: Int, title: String): UpdateBook
+}
+
+type Query {
+  author(id: Int!): AuthorType
+  authors(countryName: String): [AuthorType]
+  book(id: Int!): BookType
+  books(category: String, language: String): [BookType]
+  getUser(id: Int, username: String): UserType
+  getUsers: [UserType]
+}
+
+type UpdateBook {
+  book: BookType
+}
+
+type UserType {
+  id: ID!
+  password: String!
+  lastLogin: DateTime
+  isSuperuser: Boolean!
+  username: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+  isStaff: Boolean!
+  isActive: Boolean!
+  dateJoined: DateTime!
+  name: String!
+}
