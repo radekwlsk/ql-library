@@ -1,5 +1,3 @@
-import os
-
 from django.conf import settings
 from django.conf.urls import (
     include,
@@ -9,7 +7,9 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.views import defaults as default_views
 
-from graphene_django.views import GraphQLView
+from strawberry.django.views import GraphQLView
+
+from config.schema import schema
 
 urlpatterns = [
     # Django Admin, use {% url 'admin:index' %}
@@ -19,7 +19,11 @@ urlpatterns = [
     url(r"^users/", include("ql_library.users.urls")),
     url(r"^rest-auth/", include("rest_auth.urls")),
     url(r"^api-auth/", include("rest_framework.urls")),
-    url(r"^graphql/", GraphQLView.as_view(graphiql=True), name="graphql"),
+    url(
+        r"^graphql/",
+        GraphQLView.as_view(schema=schema, graphiql=True),
+        name="graphql",
+    ),
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

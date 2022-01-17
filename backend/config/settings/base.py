@@ -37,7 +37,7 @@ THIRD_PARTY_APPS = [
     "rest_framework.authtoken",
     "rest_auth",
     "corsheaders",
-    "graphene_django",
+    "strawberry.django",
 ]
 
 # Apps specific for this project go here.
@@ -252,6 +252,7 @@ AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend"]
 # Custom user app defaults
 # Select the correct user model
 AUTH_USER_MODEL = "users.User"
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_REDIRECT_URL = "users:redirect"
 LOGIN_URL = "account_login"
 
@@ -282,12 +283,6 @@ REST_FRAMEWORK = {
     "COERCE_DECIMAL_TO_STRING": True,
 }
 
-
-# GRAPHQL (GRAPHENE)
-GRAPHENE = {
-    "SCHEMA": "config.schema.schema"  # Where your Graphene
-    # schema lives
-}
 
 # Your common stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------

@@ -1,20 +1,26 @@
-import graphene
+from typing import List
 
-from ql_library.books.schema.root import (
-    BooksMutation,
-    BooksQuery,
-)
-from ql_library.users.schema import UsersQuery
+import strawberry.django
 
+from ql_library.books.schema import types as books_types
+from ql_library.users.schema import types as users_types
 
-class Query(UsersQuery, BooksQuery, graphene.ObjectType):
-    # This class will inherit from multiple Queries as we begin to add more apps to our project.
-    # See: https://docs.graphene-python.org/projects/django/en/latest/tutorial-plain/
-    pass
+types = []
 
 
-class Mutation(BooksMutation, graphene.ObjectType):
-    pass
+@strawberry.type
+class Query:
+    """The root queries entry point"""
+
+    # books
+    author: books_types.AuthorType = strawberry.django.field()
+    authors: List[books_types.AuthorType] = strawberry.django.field(pagination=True)
+    book: books_types.BookType = strawberry.django.field()
+    books: List[books_types.BookType] = strawberry.django.field(pagination=True)
+
+    # users
+    user: users_types.UserType = strawberry.django.field()
+    users: List[users_types.UserType] = strawberry.django.field(pagination=True)
 
 
-schema = graphene.Schema(query=Query, mutation=Mutation)
+schema = strawberry.Schema(Query, types=types)

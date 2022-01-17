@@ -8,7 +8,7 @@ python_version = '3.9'
 
 [packages]
 # Django
-django = "~=3.1.13"
+django = "~=3.2.0"
 
 # HTTP for Humans
 requests = "*"
@@ -62,6 +62,7 @@ awscli = "*"
 
 # GraphQL (strawberry)
 strawberry-graphql = "~=0.93.23"
+strawberry-graphql-django = "~=0.2.5"
 
 [dev-packages]
 

@@ -30,8 +30,7 @@ shell() {
 }
 
 generate_gql_schema() {
-    DJANGO_DEBUG=0 python manage.py graphql_schema --out schema.json
-    DJANGO_DEBUG=0 python manage.py graphql_schema --out schema.graphql
+    DJANGO_DEBUG=0 python manage.py export_schema > schema.graphql
 }
 
 case "$cmd" in

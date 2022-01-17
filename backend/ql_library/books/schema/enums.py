@@ -1,6 +1,6 @@
-import graphene
+import strawberry
 
 from .. import choices
 
-BookLanguage = graphene.Enum.from_enum(choices.BookLanguage)
-BookCategory = graphene.Enum.from_enum(choices.BookCategory)
+BookLanguage = strawberry.enum(choices.BookLanguage)
+BookCategory = strawberry.enum(choices.BookCategory)

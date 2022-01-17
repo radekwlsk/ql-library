@@ -1,45 +1,42 @@
-import graphene
-
-from graphene import ObjectType
-from graphene_django.types import DjangoObjectType
-
-from ..models import (
-    Author,
-    Book,
+from typing import (
+    List,
+    Optional,
 )
-from . import enums
+
+import strawberry.django
+
+from strawberry.django import auto
+
+from .. import models
+from . import (
+    enums,
+    filters,
+)
 
 
-class CountryType(ObjectType):
-    name = graphene.String()
+@strawberry.type
+class CountryType:
+    name: Optional[str]
 
 
-class BookType(DjangoObjectType):
-    language = graphene.Field(enums.BookLanguage, required=True)
-    category = graphene.Field(enums.BookCategory)
+@strawberry.django.type(models.Book, filters=filters.BookFilter)
+class BookType:
+    id: auto
+    author: "AuthorType"
+    title: auto
+    pages: auto
+    language: enums.BookLanguage
+    category: enums.BookCategory
 
-    class Meta:
-        model = Book
 
+@strawberry.django.type(models.Author, filters=filters.AuthorFilter)
+class AuthorType:
+    id: auto
+    name: auto
+    birthday: auto
+    country: CountryType
+    books: List["BookType"] = strawberry.django.field(pagination=True)
 
-class AuthorType(DjangoObjectType):
-    country = graphene.Field(CountryType)
-    books = graphene.List(
-        BookType,
-        category=graphene.Argument(enums.BookCategory, required=False),
-        language=graphene.Argument(enums.BookLanguage, required=False),
-    )
-
-    class Meta:
-        model = Author
-
-    def resolve_country(self, info, **kwargs):
+    @strawberry.field
+    def country(self) -> CountryType:
         return CountryType(name=self.country)
-
-    def resolve_books(self, info, category=None, language=None):
-        filters = {}
-        if category:
-            filters.update(category=category)
-        if language:
-            filters.update(language=language)
-        return self.books.filter(**filters)

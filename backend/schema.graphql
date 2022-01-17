@@ -1,0 +1,92 @@
+type AuthorType {
+  id: ID!
+  name: String!
+  birthday: Date
+  country: CountryType!
+  books(pagination: OffsetPaginationInput, filters: BookFilter): [BookType!]
+}
+
+enum BookCategory {
+  FANTASY
+  NOVEL
+  COOKBOOK
+  BIOGRAPHY
+}
+
+input BookFilter {
+  language: BookLanguage
+  category: BookCategory
+}
+
+enum BookLanguage {
+  EN
+  PL
+  FR
+  DE
+}
+
+type BookType {
+  id: ID!
+  author: AuthorType!
+  title: String!
+  pages: Int
+  language: BookLanguage!
+  category: BookCategory
+}
+
+type CountryType {
+  name: String
+}
+
+"""Date (isoformat)"""
+scalar Date
+
+"""Date with time (isoformat)"""
+scalar DateTime
+
+input OffsetPaginationInput {
+  offset: Int! = 0
+  limit: Int! = -1
+}
+
+type Query {
+  author(pk: ID): AuthorType!
+  authors(pagination: OffsetPaginationInput): [AuthorType!]!
+  book(pk: ID): BookType!
+  books(pagination: OffsetPaginationInput, filters: BookFilter): [BookType!]!
+  user(pk: ID): UserType!
+  users(pagination: OffsetPaginationInput, filters: UserFilter): [UserType!]!
+}
+
+input StrFilterLookup {
+  exact: String
+  iExact: String
+  contains: String
+  iContains: String
+  inList: [String!]
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  startsWith: String
+  iStartsWith: String
+  endsWith: String
+  iEndsWith: String
+  range: [String!]
+  isNull: Boolean
+  regex: String
+  iRegex: String
+}
+
+input UserFilter {
+  id: ID
+  username: StrFilterLookup
+}
+
+type UserType {
+  id: ID!
+  name: String!
+  username: String!
+  email: String!
+  dateJoined: DateTime!
+}
