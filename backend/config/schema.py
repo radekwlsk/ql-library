@@ -4,7 +4,7 @@ from ql_library.books.schema.root import (
     BooksMutation,
     BooksQuery,
 )
-from ql_library.users.schema import UsersQuery
+from ql_library.users.schema.root import UsersQuery
 
 
 class Query(UsersQuery, BooksQuery, graphene.ObjectType):

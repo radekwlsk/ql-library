@@ -76,7 +76,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "SCALAR",
-                      "name": "Int",
+                      "name": "ID",
                       "ofType": null
                     }
                   }
@@ -97,10 +97,10 @@
                 {
                   "defaultValue": null,
                   "description": null,
-                  "name": "countryName",
+                  "name": "filters",
                   "type": {
-                    "kind": "SCALAR",
-                    "name": "String",
+                    "kind": "INPUT_OBJECT",
+                    "name": "AuthorFilter",
                     "ofType": null
                   }
                 }
@@ -113,9 +113,13 @@
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "OBJECT",
-                  "name": "AuthorType",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "AuthorType",
+                    "ofType": null
+                  }
                 }
               }
             },
@@ -130,7 +134,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "SCALAR",
-                      "name": "Int",
+                      "name": "ID",
                       "ofType": null
                     }
                   }
@@ -151,20 +155,10 @@
                 {
                   "defaultValue": null,
                   "description": null,
-                  "name": "category",
+                  "name": "filters",
                   "type": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                {
-                  "defaultValue": null,
-                  "description": null,
-                  "name": "language",
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "String",
+                    "kind": "INPUT_OBJECT",
+                    "name": "BookFilter",
                     "ofType": null
                   }
                 }
@@ -177,9 +171,13 @@
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "OBJECT",
-                  "name": "BookType",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "BookType",
+                    "ofType": null
+                  }
                 }
               }
             },
@@ -190,26 +188,20 @@
                   "description": null,
                   "name": "id",
                   "type": {
-                    "kind": "SCALAR",
-                    "name": "Int",
-                    "ofType": null
-                  }
-                },
-                {
-                  "defaultValue": null,
-                  "description": null,
-                  "name": "username",
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
                   }
                 }
               ],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
-              "name": "getUser",
+              "name": "user",
               "type": {
                 "kind": "OBJECT",
                 "name": "UserType",
@@ -217,18 +209,33 @@
               }
             },
             {
-              "args": [],
+              "args": [
+                {
+                  "defaultValue": null,
+                  "description": null,
+                  "name": "filters",
+                  "type": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "UserFilter",
+                    "ofType": null
+                  }
+                }
+              ],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
-              "name": "getUsers",
+              "name": "users",
               "type": {
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "OBJECT",
-                  "name": "UserType",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserType",
+                    "ofType": null
+                  }
                 }
               }
             }
@@ -578,6 +585,108 @@
         {
           "description": null,
           "enumValues": null,
+          "fields": null,
+          "inputFields": [
+            {
+              "defaultValue": null,
+              "description": null,
+              "name": "id",
+              "type": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            {
+              "defaultValue": null,
+              "description": null,
+              "name": "name",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "defaultValue": null,
+              "description": null,
+              "name": "countryName",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            }
+          ],
+          "interfaces": null,
+          "kind": "INPUT_OBJECT",
+          "name": "AuthorFilter",
+          "possibleTypes": null
+        },
+        {
+          "description": null,
+          "enumValues": null,
+          "fields": null,
+          "inputFields": [
+            {
+              "defaultValue": null,
+              "description": null,
+              "name": "id",
+              "type": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            {
+              "defaultValue": null,
+              "description": null,
+              "name": "authorId",
+              "type": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            {
+              "defaultValue": null,
+              "description": null,
+              "name": "title",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "defaultValue": null,
+              "description": null,
+              "name": "category",
+              "type": {
+                "kind": "ENUM",
+                "name": "BookCategory",
+                "ofType": null
+              }
+            },
+            {
+              "defaultValue": null,
+              "description": null,
+              "name": "language",
+              "type": {
+                "kind": "ENUM",
+                "name": "BookLanguage",
+                "ofType": null
+              }
+            }
+          ],
+          "interfaces": null,
+          "kind": "INPUT_OBJECT",
+          "name": "BookFilter",
+          "possibleTypes": null
+        },
+        {
+          "description": null,
+          "enumValues": null,
           "fields": [
             {
               "args": [],
@@ -591,50 +700,6 @@
                 "ofType": {
                   "kind": "SCALAR",
                   "name": "ID",
-                  "ofType": null
-                }
-              }
-            },
-            {
-              "args": [],
-              "deprecationReason": null,
-              "description": "",
-              "isDeprecated": false,
-              "name": "password",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              }
-            },
-            {
-              "args": [],
-              "deprecationReason": null,
-              "description": "",
-              "isDeprecated": false,
-              "name": "lastLogin",
-              "type": {
-                "kind": "SCALAR",
-                "name": "DateTime",
-                "ofType": null
-              }
-            },
-            {
-              "args": [],
-              "deprecationReason": null,
-              "description": "Designates that this user has all permissions without explicitly assigning them.",
-              "isDeprecated": false,
-              "name": "isSuperuser",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "Boolean",
                   "ofType": null
                 }
               }
@@ -660,38 +725,6 @@
               "deprecationReason": null,
               "description": "",
               "isDeprecated": false,
-              "name": "firstName",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              }
-            },
-            {
-              "args": [],
-              "deprecationReason": null,
-              "description": "",
-              "isDeprecated": false,
-              "name": "lastName",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              }
-            },
-            {
-              "args": [],
-              "deprecationReason": null,
-              "description": "",
-              "isDeprecated": false,
               "name": "email",
               "type": {
                 "kind": "NON_NULL",
@@ -699,38 +732,6 @@
                 "ofType": {
                   "kind": "SCALAR",
                   "name": "String",
-                  "ofType": null
-                }
-              }
-            },
-            {
-              "args": [],
-              "deprecationReason": null,
-              "description": "Designates whether the user can log into this admin site.",
-              "isDeprecated": false,
-              "name": "isStaff",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "Boolean",
-                  "ofType": null
-                }
-              }
-            },
-            {
-              "args": [],
-              "deprecationReason": null,
-              "description": "Designates whether this user should be treated as active. Unselect this instead of deleting accounts.",
-              "isDeprecated": false,
-              "name": "isActive",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "Boolean",
                   "ofType": null
                 }
               }
@@ -785,13 +786,34 @@
           "possibleTypes": null
         },
         {
-          "description": "The `Boolean` scalar type represents `true` or `false`.",
+          "description": null,
           "enumValues": null,
           "fields": null,
-          "inputFields": null,
+          "inputFields": [
+            {
+              "defaultValue": null,
+              "description": null,
+              "name": "id",
+              "type": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            {
+              "defaultValue": null,
+              "description": null,
+              "name": "username",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            }
+          ],
           "interfaces": null,
-          "kind": "SCALAR",
-          "name": "Boolean",
+          "kind": "INPUT_OBJECT",
+          "name": "UserFilter",
           "possibleTypes": null
         },
         {
@@ -803,57 +825,13 @@
                 {
                   "defaultValue": null,
                   "description": null,
-                  "name": "authorId",
+                  "name": "data",
                   "type": {
                     "kind": "NON_NULL",
                     "name": null,
                     "ofType": {
-                      "kind": "SCALAR",
-                      "name": "ID",
-                      "ofType": null
-                    }
-                  }
-                },
-                {
-                  "defaultValue": null,
-                  "description": null,
-                  "name": "category",
-                  "type": {
-                    "kind": "ENUM",
-                    "name": "BookCategory",
-                    "ofType": null
-                  }
-                },
-                {
-                  "defaultValue": "\"EN\"",
-                  "description": null,
-                  "name": "language",
-                  "type": {
-                    "kind": "ENUM",
-                    "name": "BookLanguage",
-                    "ofType": null
-                  }
-                },
-                {
-                  "defaultValue": null,
-                  "description": null,
-                  "name": "pages",
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "Int",
-                    "ofType": null
-                  }
-                },
-                {
-                  "defaultValue": null,
-                  "description": null,
-                  "name": "title",
-                  "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "String",
+                      "kind": "INPUT_OBJECT",
+                      "name": "BookCreateInput",
                       "ofType": null
                     }
                   }
@@ -865,7 +843,7 @@
               "name": "createBook",
               "type": {
                 "kind": "OBJECT",
-                "name": "CreateBook",
+                "name": "BookType",
                 "ofType": null
               }
             },
@@ -874,60 +852,24 @@
                 {
                   "defaultValue": null,
                   "description": null,
-                  "name": "authorId",
+                  "name": "data",
                   "type": {
-                    "kind": "SCALAR",
-                    "name": "ID",
-                    "ofType": null
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "BookUpdateInput",
+                      "ofType": null
+                    }
                   }
                 },
                 {
                   "defaultValue": null,
                   "description": null,
-                  "name": "category",
+                  "name": "filters",
                   "type": {
-                    "kind": "ENUM",
-                    "name": "BookCategory",
-                    "ofType": null
-                  }
-                },
-                {
-                  "defaultValue": null,
-                  "description": null,
-                  "name": "language",
-                  "type": {
-                    "kind": "ENUM",
-                    "name": "BookLanguage",
-                    "ofType": null
-                  }
-                },
-                {
-                  "defaultValue": null,
-                  "description": null,
-                  "name": "id",
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "ID",
-                    "ofType": null
-                  }
-                },
-                {
-                  "defaultValue": null,
-                  "description": null,
-                  "name": "pages",
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "Int",
-                    "ofType": null
-                  }
-                },
-                {
-                  "defaultValue": null,
-                  "description": null,
-                  "name": "title",
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "String",
+                    "kind": "INPUT_OBJECT",
+                    "name": "BookFilter",
                     "ofType": null
                   }
                 }
@@ -935,11 +877,19 @@
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
-              "name": "updateBook",
+              "name": "updateBooks",
               "type": {
-                "kind": "OBJECT",
-                "name": "UpdateBook",
-                "ofType": null
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "BookType",
+                    "ofType": null
+                  }
+                }
               }
             }
           ],
@@ -952,47 +902,131 @@
         {
           "description": null,
           "enumValues": null,
-          "fields": [
+          "fields": null,
+          "inputFields": [
             {
-              "args": [],
-              "deprecationReason": null,
+              "defaultValue": null,
               "description": null,
-              "isDeprecated": false,
-              "name": "book",
+              "name": "authorId",
               "type": {
-                "kind": "OBJECT",
-                "name": "BookType",
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              }
+            },
+            {
+              "defaultValue": null,
+              "description": null,
+              "name": "title",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            {
+              "defaultValue": null,
+              "description": null,
+              "name": "category",
+              "type": {
+                "kind": "ENUM",
+                "name": "BookCategory",
+                "ofType": null
+              }
+            },
+            {
+              "defaultValue": "\"EN\"",
+              "description": null,
+              "name": "language",
+              "type": {
+                "kind": "ENUM",
+                "name": "BookLanguage",
+                "ofType": null
+              }
+            },
+            {
+              "defaultValue": null,
+              "description": null,
+              "name": "pages",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
                 "ofType": null
               }
             }
           ],
-          "inputFields": null,
-          "interfaces": [],
-          "kind": "OBJECT",
-          "name": "CreateBook",
+          "interfaces": null,
+          "kind": "INPUT_OBJECT",
+          "name": "BookCreateInput",
           "possibleTypes": null
         },
         {
           "description": null,
           "enumValues": null,
-          "fields": [
+          "fields": null,
+          "inputFields": [
             {
-              "args": [],
-              "deprecationReason": null,
+              "defaultValue": null,
               "description": null,
-              "isDeprecated": false,
-              "name": "book",
+              "name": "authorId",
               "type": {
-                "kind": "OBJECT",
-                "name": "BookType",
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            {
+              "defaultValue": null,
+              "description": null,
+              "name": "title",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "defaultValue": null,
+              "description": null,
+              "name": "category",
+              "type": {
+                "kind": "ENUM",
+                "name": "BookCategory",
+                "ofType": null
+              }
+            },
+            {
+              "defaultValue": null,
+              "description": null,
+              "name": "language",
+              "type": {
+                "kind": "ENUM",
+                "name": "BookLanguage",
+                "ofType": null
+              }
+            },
+            {
+              "defaultValue": null,
+              "description": null,
+              "name": "pages",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
                 "ofType": null
               }
             }
           ],
-          "inputFields": null,
-          "interfaces": [],
-          "kind": "OBJECT",
-          "name": "UpdateBook",
+          "interfaces": null,
+          "kind": "INPUT_OBJECT",
+          "name": "BookUpdateInput",
           "possibleTypes": null
         },
         {
@@ -1336,6 +1370,16 @@
           "interfaces": null,
           "kind": "ENUM",
           "name": "__TypeKind",
+          "possibleTypes": null
+        },
+        {
+          "description": "The `Boolean` scalar type represents `true` or `false`.",
+          "enumValues": null,
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "kind": "SCALAR",
+          "name": "Boolean",
           "possibleTypes": null
         },
         {

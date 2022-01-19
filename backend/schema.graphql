@@ -3,6 +3,12 @@ schema {
   mutation: Mutation
 }
 
+input AuthorFilter {
+  id: ID
+  name: String
+  countryName: String
+}
+
 type AuthorType {
   id: ID!
   name: String!
@@ -16,6 +22,22 @@ enum BookCategory {
   NOVEL
   COOKBOOK
   BIOGRAPHY
+}
+
+input BookCreateInput {
+  authorId: ID!
+  title: String!
+  category: BookCategory
+  language: BookLanguage = EN
+  pages: Int
+}
+
+input BookFilter {
+  id: ID
+  authorId: ID
+  title: String
+  category: BookCategory
+  language: BookLanguage
 }
 
 enum BookLanguage {
@@ -34,12 +56,16 @@ type BookType {
   category: BookCategory
 }
 
-type CountryType {
-  name: String
+input BookUpdateInput {
+  authorId: ID
+  title: String
+  category: BookCategory
+  language: BookLanguage
+  pages: Int
 }
 
-type CreateBook {
-  book: BookType
+type CountryType {
+  name: String
 }
 
 scalar Date
@@ -47,34 +73,28 @@ scalar Date
 scalar DateTime
 
 type Mutation {
-  createBook(authorId: ID!, category: BookCategory, language: BookLanguage = EN, pages: Int, title: String!): CreateBook
-  updateBook(authorId: ID, category: BookCategory, language: BookLanguage, id: ID, pages: Int, title: String): UpdateBook
+  createBook(data: BookCreateInput!): BookType
+  updateBooks(data: BookUpdateInput!, filters: BookFilter): [BookType!]
 }
 
 type Query {
-  author(id: Int!): AuthorType
-  authors(countryName: String): [AuthorType]
-  book(id: Int!): BookType
-  books(category: String, language: String): [BookType]
-  getUser(id: Int, username: String): UserType
-  getUsers: [UserType]
+  author(id: ID!): AuthorType
+  authors(filters: AuthorFilter): [AuthorType!]
+  book(id: ID!): BookType
+  books(filters: BookFilter): [BookType!]
+  user(id: ID!): UserType
+  users(filters: UserFilter): [UserType!]
 }
 
-type UpdateBook {
-  book: BookType
+input UserFilter {
+  id: ID
+  username: String
 }
 
 type UserType {
   id: ID!
-  password: String!
-  lastLogin: DateTime
-  isSuperuser: Boolean!
   username: String!
-  firstName: String!
-  lastName: String!
   email: String!
-  isStaff: Boolean!
-  isActive: Boolean!
   dateJoined: DateTime!
   name: String!
 }

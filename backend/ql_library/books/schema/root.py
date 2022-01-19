@@ -5,6 +5,7 @@ from ..models import (
     Book,
 )
 from . import (
+    inputs,
     mutations,
     types,
 )
@@ -16,45 +17,43 @@ class BooksQuery(graphene.ObjectType):
 
     author = graphene.Field(
         types.AuthorType,
-        obj_id=graphene.Argument(graphene.Int, required=True, name="id"),
+        obj_id=graphene.Argument(graphene.ID, required=True, name="id"),
     )
     authors = graphene.List(
-        types.AuthorType, country_name=graphene.String(required=False)
+        graphene.NonNull(types.AuthorType),
+        filters=inputs.AuthorFilter(required=False),
     )
 
     book = graphene.Field(
         types.BookType,
-        obj_id=graphene.Argument(graphene.Int, required=True, name="id"),
+        obj_id=graphene.Argument(graphene.ID, required=True, name="id"),
     )
     books = graphene.List(
-        types.BookType,
-        category=graphene.String(required=False),
-        language=graphene.String(required=False),
+        graphene.NonNull(types.BookType),
+        filters=inputs.BookFilter(required=False),
     )
 
     @staticmethod
     def resolve_author(parent, info, obj_id):
-        return Author.objects.get(id=obj_id)
+        return types.AuthorType.get_node(info, obj_id)
 
     @staticmethod
-    def resolve_authors(parent, info, country_name=None):
-        if country_name:
-            return Author.objects.filter(country__iexact=country_name)
-        else:
-            return Author.objects.all()
+    def resolve_authors(parent, info, filters=None):
+        qs = types.AuthorType.get_queryset(Author.objects.all(), info)
+        if filters:
+            qs = qs.filter(**filters)
+        return qs
 
     @staticmethod
     def resolve_book(parent, info, obj_id):
-        return Book.objects.get(id=obj_id)
+        return types.BookType.get_node(info, obj_id)
 
     @staticmethod
-    def resolve_books(parent, info, category=None, language=None):
-        filters = {}
-        if category:
-            filters.update(category=category)
-        if language:
-            filters.update(language=category)
-        return Book.objects.filter(**filters)
+    def resolve_books(parent, info, filters=None):
+        qs = types.BookType.get_queryset(Book.objects.all(), info)
+        if filters:
+            qs = qs.filter(**filters)
+        return qs
 
 
 class BooksMutation(graphene.ObjectType):
@@ -62,4 +61,4 @@ class BooksMutation(graphene.ObjectType):
         abstract = True
 
     create_book = mutations.CreateBook.Field()
-    update_book = mutations.UpdateBook.Field()
+    update_books = mutations.UpdateBooks.Field()
