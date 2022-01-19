@@ -1,3 +1,9 @@
+input AuthorFilter {
+  id: ID
+  name: StrFilterLookup
+  countryName: String
+}
+
 type AuthorType {
   id: ID!
   name: String!
@@ -13,7 +19,18 @@ enum BookCategory {
   BIOGRAPHY
 }
 
+input BookCreateInput {
+  authorId: ID!
+  category: BookCategory
+  language: BookLanguage = EN
+  pages: Int
+  title: String!
+}
+
 input BookFilter {
+  id: ID
+  title: String
+  authorId: ID
   language: BookLanguage
   category: BookCategory
 }
@@ -34,6 +51,14 @@ type BookType {
   category: BookCategory
 }
 
+input BookUpdateInput {
+  authorId: ID
+  category: BookCategory
+  language: BookLanguage
+  pages: Int
+  title: String
+}
+
 type CountryType {
   name: String
 }
@@ -44,6 +69,11 @@ scalar Date
 """Date with time (isoformat)"""
 scalar DateTime
 
+type Mutation {
+  createBook(data: BookCreateInput!): BookType!
+  updateBooks(data: BookUpdateInput!, filters: BookFilter): [BookType!]!
+}
+
 input OffsetPaginationInput {
   offset: Int! = 0
   limit: Int! = -1
@@ -51,7 +81,7 @@ input OffsetPaginationInput {
 
 type Query {
   author(pk: ID): AuthorType!
-  authors(pagination: OffsetPaginationInput): [AuthorType!]!
+  authors(pagination: OffsetPaginationInput, filters: AuthorFilter): [AuthorType!]!
   book(pk: ID): BookType!
   books(pagination: OffsetPaginationInput, filters: BookFilter): [BookType!]!
   user(pk: ID): UserType!

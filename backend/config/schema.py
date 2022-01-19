@@ -1,26 +1,22 @@
-from typing import List
-
 import strawberry.django
 
-from ql_library.books.schema import types as books_types
-from ql_library.users.schema import types as users_types
+from strawberry.extensions import QueryDepthLimiter
+from strawberry.tools import merge_types
+
+from ql_library.books.schema.mutation import BooksMutation
+from ql_library.books.schema.query import BooksQuery
+from ql_library.users.schema.query import UsersQuery
 
 types = []
 
+Query = merge_types("Query", (BooksQuery, UsersQuery))
+Mutation = merge_types("Mutation", (BooksMutation,))
 
-@strawberry.type
-class Query:
-    """The root queries entry point"""
-
-    # books
-    author: books_types.AuthorType = strawberry.django.field()
-    authors: List[books_types.AuthorType] = strawberry.django.field(pagination=True)
-    book: books_types.BookType = strawberry.django.field()
-    books: List[books_types.BookType] = strawberry.django.field(pagination=True)
-
-    # users
-    user: users_types.UserType = strawberry.django.field()
-    users: List[users_types.UserType] = strawberry.django.field(pagination=True)
-
-
-schema = strawberry.Schema(Query, types=types)
+schema = strawberry.Schema(
+    Query,
+    mutation=Mutation,
+    types=types,
+    extensions=[
+        QueryDepthLimiter(max_depth=3),
+    ],
+)
