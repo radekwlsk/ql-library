@@ -64,10 +64,10 @@ For convenience, you can keep your normal user logged in on Chrome and your
 superuser logged in on Firefox (or similar), so that you can see how the site 
 behaves for both kinds of users.
 
-#### Graphene
+#### Strawberry
 
-Graphene is a library for GraphQL API implementation. All the requests to GraphQL 
-server are handled by a single URL and Graphene's `GraphQLView` view. The view has
+Strawberry is a library for GraphQL API implementation. All the requests to GraphQL 
+server are handled by a single URL and Strawberry's `GraphQLView` view. The view has
 a parameter to enable a web-based integrated development environment, GraphiQL
 (`graphiql=True`). If you set the GraphQL endpoint behind an authorization feature
 like a token, this tool becomes inconvenient to use because of the need to modify
