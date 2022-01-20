@@ -108,6 +108,9 @@ pytest-pudb = "~=0.7.0"
 # pytest plugin for factoryboy
 pytest-factoryboy = "~=2.1.0"
 
+# pytest fixture for benchmarking code
+pytest-benchmark = "~=3.4.1"
+
 # app for create functional testing
 django-webtest = "~=1.9.9"
 

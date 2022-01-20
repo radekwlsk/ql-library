@@ -1,9 +1,8 @@
-import random
-
 import factory
 
 from factory.django import DjangoModelFactory
 from factory.fuzzy import FuzzyChoice
+from factory.random import randgen as random
 
 from .. import choices
 from ..models import (
@@ -19,6 +18,15 @@ class AuthorFactory(DjangoModelFactory):
 
     class Meta:
         model = Author
+
+    class Params:
+        with_books = factory.Trait(
+            books=factory.RelatedFactoryList(
+                "ql_library.books.tests.factories.BookFactory",
+                factory_related_name="author",
+                size=lambda: random.randint(5, 30),
+            )
+        )
 
 
 class BookFactory(DjangoModelFactory):

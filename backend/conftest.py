@@ -1,15 +1,12 @@
 from django.contrib.auth.models import AnonymousUser
-from django.urls import reverse
 
 import pytest
 
 from faker import config
-from graphene.test import Client
 from pytest_django.lazy_django import skip_if_no_django
 from requests_mock import MockerCore
 from rest_framework.test import APIRequestFactory
-
-from config.schema import schema as default_schema
+from strawberry.django.test import GraphQLTestClient
 
 config.DEFAULT_LOCALE = "pl_PL"
 
@@ -91,18 +88,12 @@ def requests_mock():
 
 @pytest.fixture
 def gql_client(client, rf):
-    def inner(user=None, schema=default_schema, **kwargs):
+    def inner(user=None):
         if user is not None:
             client.force_login(user=user)
         else:
             user = AnonymousUser()
-        request = rf.post(
-            reverse("graphql"),
-            content_type="application/json",
-        )
-        kwargs["context_value"] = request
-        request.user = user
-        gql_client = Client(schema, **kwargs)
+        gql_client = GraphQLTestClient(client)
         gql_client.user = user
         return gql_client
 

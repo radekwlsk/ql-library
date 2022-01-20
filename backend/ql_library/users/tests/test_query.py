@@ -7,7 +7,7 @@ from ql_library.users.tests.factories import UserFactory
 class TestUserQuery:
     query = """
     { 
-        getUsers {
+        users {
             id
             username
         }
@@ -16,21 +16,19 @@ class TestUserQuery:
 
     def test_get_users_query(self, gql_client):
         users = UserFactory.create_batch(5)
-        result = gql_client().execute(self.query)
-        assert "errors" not in result
-        assert len(result["data"]["getUsers"]) == len(users)
+        result = gql_client().query(self.query)
+        assert len(result.data["users"]) == len(users)
 
     def test_get_user_query(self, gql_client):
         users = UserFactory.create_batch(5)
         query = f"""
         {{
-            getUser(username: \"{users[0].username}\") {{
+            user(pk: {users[0].id}) {{
                 id
                 email
             }}
         }}
         """
 
-        result = gql_client().execute(query)
-        assert "errors" not in result
-        assert result["data"]["getUser"]["email"] == users[0].email
+        result = gql_client().query(query)
+        assert result.data["user"]["email"] == users[0].email

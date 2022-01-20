@@ -1,7 +1,9 @@
 import strawberry.django
 
-from strawberry.django import auto
-from strawberry.django import filters
+from strawberry.django import (
+    auto,
+    filters,
+)
 
 from .. import models
 from . import enums
