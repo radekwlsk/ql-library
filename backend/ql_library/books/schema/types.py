@@ -3,6 +3,7 @@ import graphene
 from graphene import ObjectType
 from graphene_django.types import DjangoObjectType
 
+from ...utils.graphene import PaginationDjangoListField
 from ..models import (
     Author,
     Book,
@@ -24,7 +25,7 @@ class BookType(DjangoObjectType):
 
 class AuthorType(DjangoObjectType):
     country = graphene.Field(CountryType)
-    books = graphene.List(
+    books = PaginationDjangoListField(
         BookType,
         category=graphene.Argument(enums.BookCategory, required=False),
         language=graphene.Argument(enums.BookLanguage, required=False),
@@ -33,13 +34,15 @@ class AuthorType(DjangoObjectType):
     class Meta:
         model = Author
 
-    def resolve_country(self, info, **kwargs):
-        return CountryType(name=self.country)
+    @staticmethod
+    def resolve_country(instance, info, **kwargs):
+        return CountryType(name=instance.country)
 
-    def resolve_books(self, info, category=None, language=None):
+    @staticmethod
+    def resolve_books(instance, info, category=None, language=None):
         filters = {}
         if category:
             filters.update(category=category)
         if language:
             filters.update(language=language)
-        return self.books.filter(**filters)
+        return instance.books.filter(**filters)

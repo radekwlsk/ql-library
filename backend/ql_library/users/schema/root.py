@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 
 import graphene
 
+from ...utils.graphene import PaginationDjangoListField
 from . import (
     inputs,
     types,
@@ -15,15 +16,17 @@ class UsersQuery(object):
         types.UserType,
         obj_id=graphene.Argument(graphene.ID, required=True, name="id"),
     )
-    users = graphene.List(
-        graphene.NonNull(types.UserType),
+    users = PaginationDjangoListField(
+        types.UserType,
         filters=inputs.UserFilter(required=False),
     )
 
-    def resolve_user(self, info, obj_id, **kwargs):
+    @staticmethod
+    def resolve_user(parent, info, obj_id, **kwargs):
         return types.UserType.get_node(info, obj_id)
 
-    def resolve_users(self, info, filters=None, **kwargs):
+    @staticmethod
+    def resolve_users(parent, info, filters=None, **kwargs):
         qs = types.UserType.get_queryset(User.objects.all(), info)
         if filters:
             qs = qs.filter(**filters)

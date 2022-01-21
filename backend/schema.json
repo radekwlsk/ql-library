@@ -103,6 +103,16 @@
                     "name": "AuthorFilter",
                     "ofType": null
                   }
+                },
+                {
+                  "defaultValue": null,
+                  "description": null,
+                  "name": "pagination",
+                  "type": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "OffsetPaginationInput",
+                    "ofType": null
+                  }
                 }
               ],
               "deprecationReason": null,
@@ -161,6 +171,16 @@
                     "name": "BookFilter",
                     "ofType": null
                   }
+                },
+                {
+                  "defaultValue": null,
+                  "description": null,
+                  "name": "pagination",
+                  "type": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "OffsetPaginationInput",
+                    "ofType": null
+                  }
                 }
               ],
               "deprecationReason": null,
@@ -217,6 +237,16 @@
                   "type": {
                     "kind": "INPUT_OBJECT",
                     "name": "UserFilter",
+                    "ofType": null
+                  }
+                },
+                {
+                  "defaultValue": null,
+                  "description": null,
+                  "name": "pagination",
+                  "type": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "OffsetPaginationInput",
                     "ofType": null
                   }
                 }
@@ -327,6 +357,16 @@
                     "name": "BookLanguage",
                     "ofType": null
                   }
+                },
+                {
+                  "defaultValue": null,
+                  "description": null,
+                  "name": "pagination",
+                  "type": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "OffsetPaginationInput",
+                    "ofType": null
+                  }
                 }
               ],
               "deprecationReason": null,
@@ -337,9 +377,13 @@
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "OBJECT",
-                  "name": "BookType",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "BookType",
+                    "ofType": null
+                  }
                 }
               }
             }
@@ -580,6 +624,37 @@
           "interfaces": null,
           "kind": "ENUM",
           "name": "BookCategory",
+          "possibleTypes": null
+        },
+        {
+          "description": null,
+          "enumValues": null,
+          "fields": null,
+          "inputFields": [
+            {
+              "defaultValue": "0",
+              "description": null,
+              "name": "offset",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            {
+              "defaultValue": "-1",
+              "description": null,
+              "name": "limit",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            }
+          ],
+          "interfaces": null,
+          "kind": "INPUT_OBJECT",
+          "name": "OffsetPaginationInput",
           "possibleTypes": null
         },
         {

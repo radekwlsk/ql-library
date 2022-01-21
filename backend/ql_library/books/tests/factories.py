@@ -20,6 +20,15 @@ class AuthorFactory(DjangoModelFactory):
     class Meta:
         model = Author
 
+    class Params:
+        with_books = factory.Trait(
+            books=factory.RelatedFactoryList(
+                "ql_library.books.tests.factories.BookFactory",
+                factory_related_name="author",
+                size=lambda: random.randint(5, 30),
+            )
+        )
+
 
 class BookFactory(DjangoModelFactory):
     author = factory.SubFactory(AuthorFactory)

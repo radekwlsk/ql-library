@@ -14,7 +14,7 @@ type AuthorType {
   name: String!
   birthday: Date
   country: CountryType
-  books(category: BookCategory, language: BookLanguage): [BookType]
+  books(category: BookCategory, language: BookLanguage, pagination: OffsetPaginationInput): [BookType!]
 }
 
 enum BookCategory {
@@ -77,13 +77,18 @@ type Mutation {
   updateBooks(data: BookUpdateInput!, filters: BookFilter): [BookType!]
 }
 
+input OffsetPaginationInput {
+  offset: Int = 0
+  limit: Int = -1
+}
+
 type Query {
   author(id: ID!): AuthorType
-  authors(filters: AuthorFilter): [AuthorType!]
+  authors(filters: AuthorFilter, pagination: OffsetPaginationInput): [AuthorType!]
   book(id: ID!): BookType
-  books(filters: BookFilter): [BookType!]
+  books(filters: BookFilter, pagination: OffsetPaginationInput): [BookType!]
   user(id: ID!): UserType
-  users(filters: UserFilter): [UserType!]
+  users(filters: UserFilter, pagination: OffsetPaginationInput): [UserType!]
 }
 
 input UserFilter {
